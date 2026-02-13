@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Minimal Archive</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+
     <style>
         :root {
             --bg-color: #ffffff;
@@ -19,8 +21,9 @@
             padding: 0;
             background-color: var(--bg-color);
             color: var(--text-color);
-            font-family: 'Inter', sans-serif;
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
             -webkit-tap-highlight-color: transparent; /* 모바일 터치 하이라이트 제거 */
+            line-height: 1.5;
         }
 
         header {
@@ -48,6 +51,7 @@
             border-bottom: 4px solid transparent;
             color: var(--gray-medium);
             transition: var(--transition);
+            font-family: 'Pretendard', sans-serif;
         }
 
         .tab-button.active {
@@ -57,16 +61,22 @@
 
         .tab-content {
             display: none;
+            animation: fadeIn 0.3s ease;
         }
 
         .tab-content.active {
             display: block;
         }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
         h2 {
             font-size: 1.1rem;
             margin-bottom: 20px;
-            font-weight: 400;
+            font-weight: 600;
             margin-top: 40px;
         }
 
@@ -98,8 +108,10 @@
             display: block;
             transition: var(--transition);
             box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+            filter: grayscale(0%); /* 기본 컬러 */
         }
 
+        /* 책 정보 오버레이 */
         .book-info {
             position: absolute;
             top: 0;
@@ -118,15 +130,15 @@
             padding: 10px;
             box-sizing: border-box;
             backdrop-filter: blur(2px);
-            pointer-events: none; /* 정보창이 터치를 방해하지 않도록 */
+            pointer-events: none; /* 클릭 통과 (JS제어 위함) */
         }
 
         .book-info strong {
             display: block;
             margin-bottom: 4px;
             font-weight: 700;
-            font-size: 0.95rem;
-            line-height: 1.2;
+            font-size: 0.9rem;
+            line-height: 1.3;
             word-break: keep-all;
         }
 
@@ -163,9 +175,10 @@
         }
 
         .shelf-line {
-            height: 4px;
+            height: 1px;
             background-color: var(--text-color);
             width: 100%;
+            opacity: 0.2;
         }
         
         /* Videos Section */
@@ -201,6 +214,7 @@
             font-size: 0.9rem;
             line-height: 1.4;
             word-break: keep-all;
+            font-weight: 500;
         }
 
         footer {
@@ -209,6 +223,7 @@
             font-size: 0.8rem;
             margin-top: 50px;
             border-top: 1px solid #eee;
+            color: #777;
         }
     </style>
 </head>
@@ -252,7 +267,7 @@
                         </div>
                     </div>
                     <div class="book-item">
-                        <img src="https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9791189198862.jpg" alt="Origin of Species" class="book-cover">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Origin_of_Species_title_page.jpg/500px-Origin_of_Species_title_page.jpg" alt="Origin of Species" class="book-cover">
                         <div class="book-info">
                             <strong>종의 기원</strong>
                             <span class="book-author">찰스 다윈</span>
@@ -467,25 +482,20 @@
 
             bookItems.forEach(item => {
                 item.addEventListener('click', (e) => {
-                    // 이미 활성화된 상태라면 끄기 (선택 사항, 여기선 켜진 상태 유지하다가 딴거 누르면 꺼짐)
                     const isActive = item.classList.contains('active');
                     
-                    // 모든 책의 active 클래스 제거
                     bookItems.forEach(otherItem => {
                         otherItem.classList.remove('active');
                     });
 
-                    // 클릭된 책이 원래 꺼져있었다면 켜기
                     if (!isActive) {
                         item.classList.add('active');
                     }
                     
-                    // 이벤트 전파 방지 (document 클릭 시 꺼지는 것 방지)
                     e.stopPropagation();
                 });
             });
 
-            // 화면 빈 공간 클릭 시 모든 책 정보 닫기
             document.addEventListener('click', () => {
                 bookItems.forEach(item => {
                     item.classList.remove('active');
