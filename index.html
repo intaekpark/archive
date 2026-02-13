@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Minimal Archive</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #000000;
+            --gray-light: #f4f4f4;
+            --gray-medium: #ccc;
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Inter', sans-serif;
+        }
+
+        header {
+            padding: 40px 5% 20px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid var(--gray-medium);
+            margin-bottom: 40px;
+        }
+
+        .tab-button {
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            border-bottom: 4px solid transparent;
+            color: var(--gray-medium);
+            transition: var(--transition);
+        }
+
+        .tab-button.active {
+            color: var(--text-color);
+            border-bottom-color: var(--text-color);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        h2 {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            font-weight: 400;
+            margin-top: 40px;
+        }
+
+        /* Books Section */
+        .book-shelf {
+            margin-bottom: 60px;
+        }
+
+        .book-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 10px;
+            align-items: flex-end; 
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+
+        .book-item {
+            width: 120px;
+            flex-shrink: 0;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .book-cover {
+            width: 100%;
+            height: 170px;
+            object-fit: cover;
+            display: block;
+            transition: var(--transition);
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .book-info {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 170px;
+            background-color: rgba(0, 0, 0, 0.75);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: var(--transition);
+            text-align: center;
+            padding: 10px;
+            box-sizing: border-box;
+            backdrop-filter: blur(2px);
+        }
+
+        .book-info strong {
+            display: block;
+            margin-bottom: 4px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            line-height: 1.2;
+            word-break: keep-all;
+        }
+
+        .book-author {
+            display: block;
+            font-size: 0.8rem;
+            margin-bottom: 8px;
+            color: #ddd;
+        }
+
+        .book-date {
+            display: block;
+            font-size: 0.75rem;
+            opacity: 0.7;
+            font-weight: 300;
+        }
+        
+        .book-item:hover .book-cover {
+            transform: translateY(-5px);
+            box-shadow: 4px 8px 12px rgba(0,0,0,0.15);
+        }
+
+        .book-item:hover .book-info {
+            opacity: 1;
+        }
+
+        .shelf-line {
+            height: 4px;
+            background-color: var(--text-color);
+            width: 100%;
+        }
+        
+        /* Videos Section */
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 30px 20px;
+        }
+
+        a.video-item {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .video-thumbnail {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background-color: var(--gray-medium);
+            margin-bottom: 10px;
+            transition: var(--transition);
+            background-size: cover;
+            background-position: center;
+            border-radius: 4px;
+        }
+        
+        .video-item:hover .video-thumbnail {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .video-title {
+            font-size: 0.9rem;
+            line-height: 1.4;
+            word-break: keep-all;
+        }
+
+        footer {
+            padding: 50px 0;
+            text-align: center;
+            font-size: 0.8rem;
+            margin-top: 50px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="container">
+    </header>
+
+    <main class="container">
+        <nav class="tabs">
+            <div class="tab-button active" onclick="openTab('books')">Books</div>
+            <div class="tab-button" onclick="openTab('videos')">Videos</div>
+        </nav>
+
+        <section id="books" class="tab-content active">
+            <div class="book-shelf">
+                <h2>읽는 중</h2>
+                <div class="book-row">
+                    <div class="book-item">
+                        <img src="https://i.namu.wiki/i/zIQzBUHWlWMlPTRt_MsITbj5SvK_aD11mLjAT2hGpbsLxgqveFi4csrDEyRvc-81JG2fA-v2qccrnh0FdBGsCw.webp" alt="Cosmos" class="book-cover">
+                        <div class="book-info">
+                            <strong>코스모스</strong>
+                            <span class="book-author">칼 세이건</span>
+                            <span class="book-date">25.1 ~</span>
+                        </div>
+                    </div>
+                    <div class="book-item">
+                        <img src="http://nicebook.net/data_book_img/p/p_04505__book//8949705095_1.jpg" alt="Origin of Species" class="book-cover">
+                        <div class="book-info">
+                            <strong>종의 기원</strong>
+                            <span class="book-author">찰스 다윈</span>
+                            <span class="book-date">25.1 ~</span>
+                        </div>
+                    </div>
+                    <div class="book-item">
+                        <img src="https://image.yes24.com/goods/129125402/XL" alt="The 1-Page Marketing Plan" class="book-cover">
+                        <div class="book-info">
+                            <strong>린 마케팅</strong>
+                            <span class="book-author">앨런 딥</span>
+                            <span class="book-date">26.01 ~</span>
+                        </div>
+                    </div>
+                    <div class="book-item">
+                        <img src="https://image.aladin.co.kr/product/2064/86/cover500/8966260578_1.jpg" alt="The Lean Startup" class="book-cover">
+                        <div class="book-info">
+                            <strong>린 스타트업</strong>
+                            <span class="book-author">에릭 리스</span>
+                            <span class="book-date">26.01 ~</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="shelf-line"></div>
+            </div>
+
+            <div class="book-shelf">
+                <h2>읽은 책</h2>
+                <div class="book-row">
+                    <div class="book-item">
+                        <img src="https://image.aladin.co.kr/product/12090/98/letslook/K872531240_t1.jpg" alt="Ethics in the Real World" class="book-cover">
+                        <div class="book-info">
+                            <strong>더 나은 세상</strong>
+                            <span class="book-author">피터 싱어</span>
+                            <span class="book-date">25.12</span>
+                        </div>
+                    </div>
+                    <div class="book-item">
+                        <img src="https://shopping-phinf.pstatic.net/main_3247335/32473353629.20230725120747.jpg" alt="The One Thing" class="book-cover">
+                        <div class="book-info">
+                            <strong>원씽</strong>
+                            <span class="book-author">게리 켈러</span>
+                            <span class="book-date">25.11</span>
+                        </div>
+                    </div>
+                    <div class="book-item">
+                        <img src="https://image.aladin.co.kr/product/33850/22/cover500/8934957778_1.jpg" alt="Nobody's Fool" class="book-cover">
+                        <div class="book-info">
+                            <strong>당신이 속는 이유</strong>
+                            <span class="book-author">대니얼 사이먼스</span>
+                            <span class="book-date">25.11</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="shelf-line"></div>
+            </div>
+
+            <div class="book-shelf">
+                <h2>읽다 만 책</h2>
+                <div class="book-row">
+                     <div class="book-item">
+                        <img src="https://thumbnail.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/37102676707396-c6a0f5dc-d67c-4693-942e-fbd99c968bfa.jpg" alt="Best Product" class="book-cover">
+                        <div class="book-info">
+                            <strong>최고의 프로덕트는<br>무엇이 다른가</strong>
+                            <span class="book-author">유진호</span>
+                            <span class="book-date">25.12</span>
+                        </div>
+                    </div>
+                    <div class="book-item">
+                        <img src="https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9791130635651.jpg" alt="Working Backwards" class="book-cover">
+                        <div class="book-info">
+                            <strong>순서 파괴</strong>
+                            <span class="book-author">콜린 브라이어</span>
+                            <span class="book-date">25.12</span>
+                        </div>
+                    </div>
+                    <div class="book-item">
+                        <img src="https://image.yes24.com/goods/92275597/XL" alt="No Rules Rules" class="book-cover">
+                        <div class="book-info">
+                            <strong>규칙 없음</strong>
+                            <span class="book-author">리드 헤이스팅스</span>
+                            <span class="book-date">25.12</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="shelf-line"></div>
+            </div>
+        </section>
+
+        <section id="videos" class="tab-content">
+            <div class="video-grid">
+                <a href="https://www.youtube.com/watch?v=tcrr2QiXt9M" target="_blank" class="video-item">
+                    <div class="video-thumbnail" style="background-image: url('https://img.youtube.com/vi/tcrr2QiXt9M/hqdefault.jpg');"></div>
+                    <div class="video-title">토스 리더가 말하는 PO가 꼭 알아야할 개념 | PO SESSION</div>
+                </a>
+                
+                <a href="https://www.youtube.com/watch?v=CBYhVcO4WgI" target="_blank" class="video-item">
+                    <div class="video-thumbnail" style="background-image: url('https://img.youtube.com/vi/CBYhVcO4WgI/hqdefault.jpg');"></div>
+                    <div class="video-title">How to Start a Startup (Sam Altman)</div>
+                </a>
+
+                <a href="https://www.youtube.com/watch?v=OMFBXEvSGp8" target="_blank" class="video-item">
+                    <div class="video-thumbnail" style="background-image: url('https://img.youtube.com/vi/OMFBXEvSGp8/hqdefault.jpg');"></div>
+                    <div class="video-title">알토스벤처스가 지킨 스탠포드의 3가지 투자원칙</div>
+                </a>
+
+                <a href="https://www.youtube.com/watch?v=w5BhMyT_GEk" target="_blank" class="video-item">
+                    <div class="video-thumbnail" style="background-image: url('https://img.youtube.com/vi/w5BhMyT_GEk/hqdefault.jpg');"></div>
+                    <div class="video-title">사업은 이렇게 하는거다 (Peter Thiel)</div>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Archive.</p>
+    </footer>
+
+    <script>
+        function openTab(tabName) {
+            const tabContents = document.getElementsByClassName("tab-content");
+            for (let i = 0; i < tabContents.length; i++) {
+                tabContents[i].classList.remove("active");
+            }
+            const tabButtons = document.getElementsByClassName("tab-button");
+            for (let i = 0; i < tabButtons.length; i++) {
+                tabButtons[i].classList.remove("active");
+            }
+            document.getElementById(tabName).classList.add("active");
+            const clickedButton = Array.from(tabButtons).find(button => button.textContent.toLowerCase() === tabName);
+            if (clickedButton) {
+                clickedButton.classList.add("active");
+            }
+        }
+    </script>
+</body>
+</html>
