@@ -20,6 +20,7 @@
             background-color: var(--bg-color);
             color: var(--text-color);
             font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent; /* 모바일 터치 하이라이트 제거 */
         }
 
         header {
@@ -117,6 +118,7 @@
             padding: 10px;
             box-sizing: border-box;
             backdrop-filter: blur(2px);
+            pointer-events: none; /* 정보창이 터치를 방해하지 않도록 */
         }
 
         .book-info strong {
@@ -142,12 +144,21 @@
             font-weight: 300;
         }
         
+        /* PC Hover 효과 */
         .book-item:hover .book-cover {
             transform: translateY(-5px);
             box-shadow: 4px 8px 12px rgba(0,0,0,0.15);
         }
-
         .book-item:hover .book-info {
+            opacity: 1;
+        }
+
+        /* 모바일 Active 효과 (JS로 제어) */
+        .book-item.active .book-cover {
+            transform: translateY(-5px);
+            box-shadow: 4px 8px 12px rgba(0,0,0,0.15);
+        }
+        .book-item.active .book-info {
             opacity: 1;
         }
 
@@ -241,7 +252,7 @@
                         </div>
                     </div>
                     <div class="book-item">
-                        <img src="http://nicebook.net/data_book_img/p/p_04505__book//8949705095_1.jpg" alt="Origin of Species" class="book-cover">
+                        <img src="https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9791189198862.jpg" alt="Origin of Species" class="book-cover">
                         <div class="book-info">
                             <strong>종의 기원</strong>
                             <span class="book-author">찰스 다윈</span>
@@ -386,7 +397,7 @@
                         <img src="https://image.aladin.co.kr/product/34249/72/letslook/K132931658_t4.jpg" alt="Designer in Korea" class="book-cover">
                         <div class="book-info">
                             <strong>대한민국에서<br>디자이너로 살기</strong>
-                            <span class="book-author"> </span>
+                            <span class="book-author">이원찬</span>
                             <span class="book-date">25.07</span>
                         </div>
                     </div>
@@ -433,6 +444,7 @@
     </footer>
 
     <script>
+        // 탭 기능
         function openTab(tabName) {
             const tabContents = document.getElementsByClassName("tab-content");
             for (let i = 0; i < tabContents.length; i++) {
@@ -448,6 +460,38 @@
                 clickedButton.classList.add("active");
             }
         }
+
+        // 모바일 터치 대응 (책 아이템 클릭 시 토글)
+        document.addEventListener('DOMContentLoaded', () => {
+            const bookItems = document.querySelectorAll('.book-item');
+
+            bookItems.forEach(item => {
+                item.addEventListener('click', (e) => {
+                    // 이미 활성화된 상태라면 끄기 (선택 사항, 여기선 켜진 상태 유지하다가 딴거 누르면 꺼짐)
+                    const isActive = item.classList.contains('active');
+                    
+                    // 모든 책의 active 클래스 제거
+                    bookItems.forEach(otherItem => {
+                        otherItem.classList.remove('active');
+                    });
+
+                    // 클릭된 책이 원래 꺼져있었다면 켜기
+                    if (!isActive) {
+                        item.classList.add('active');
+                    }
+                    
+                    // 이벤트 전파 방지 (document 클릭 시 꺼지는 것 방지)
+                    e.stopPropagation();
+                });
+            });
+
+            // 화면 빈 공간 클릭 시 모든 책 정보 닫기
+            document.addEventListener('click', () => {
+                bookItems.forEach(item => {
+                    item.classList.remove('active');
+                });
+            });
+        });
     </script>
 </body>
 </html>
